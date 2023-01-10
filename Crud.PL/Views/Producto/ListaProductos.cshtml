@@ -1,0 +1,167 @@
+﻿@model IEnumerable<Crud.DAL.Models.Producto>
+
+@{
+    ViewData["Title"] = "Productos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Productos</h1>
+
+<p>
+    <button class="btn btn-success" id="btnNuevo">Nuevo Producto</button>
+</p>
+<table class="table table-striped" id="mydataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaIngreso)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductoId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaIngreso)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Obtener", new {  id=item.ProductoId  }, new { @class = "btn btn-primary btn-sm me-2 btn-editar" })
+                    @Html.ActionLink("Eliminar", "EliminarProd", new {  id=item.ProductoId  }, new { @class = "btn btn-danger btn-sm btn-eliminar" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtProductoId" value="0" />
+                <div class="mb-2">
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" id="txtNombre" />
+                </div>
+                <div class="mb-2">
+                    <label>Descripcion</label>
+                    <input type="text" class="form-control" id="txtDescripcion" />
+                </div>
+                <div class="mb-2">
+                    <label>Precio</label>
+                    <input type="number" class="form-control" id="txtPrecio" />
+                </div>
+                <div class="mb-2">
+                    <label>Fecha Ingreso</label>
+                    <input type="date" class="form-control" id="txtFechaIngreso" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+ @section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+            $(document).ready(function () {
+                $('#mydataTable').DataTable();
+            });
+        });
+
+        const Modelo_base = {
+            productoId: 0,
+            nombre: "",
+            descripcion: "",
+            precio: "",
+            fechaIngreso: ""
+        }
+
+        function mostrarModal(modelo) {
+            $("#txtProductoId").val(modelo.productoId);
+            $("#txtNombre").val(modelo.nombre)
+            $("#txtDescripcion").val(modelo.descripcion)
+            $("#txtPrecio").val(modelo.precio)
+            $("#txtFechaIngreso").val(modelo.fechaIngreso)
+            $('.modal').modal('show');
+        }
+
+        $("#btnNuevo").click(() => {
+            mostrarModal(Modelo_base);
+        })
+
+        $("#btnGuardar").click(() => {
+            let NuevoModelo = Modelo_base;
+            NuevoModelo["productoId"] = $("#txtProductoId").val();
+            NuevoModelo["nombre"] = $("#txtNombre").val();
+            NuevoModelo["descripcion"] = $("#txtDescripcion").val();
+            NuevoModelo["precio"] = $("#txtPrecio").val();
+            NuevoModelo["fechaIngreso"] = $("#txtFechaIngreso").val();
+            if ($("#txtProductoId").val() == "0") {
+                fetch("Insertar", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(NuevoModelo)
+                })             
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Registro Agregado',
+                        showConfirmButton: false,
+                        timer: 9000
+                    })
+                    $('.modal').modal('hide');
+            }
+            window.location.href = '/Producto/ListaProductos/';
+        })
+
+
+        $("#mydataTable tbody").on("click", ".btn-eliminar", function () {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'El registro ha sido eliminado.',
+                showConfirmButton: false,
+                timer: 9000
+            })
+        })
+
+    </script>
+
+}

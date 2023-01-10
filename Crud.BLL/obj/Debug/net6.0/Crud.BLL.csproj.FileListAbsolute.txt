@@ -1,0 +1,15 @@
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\bin\Debug\net6.0\Crud.BLL.deps.json
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\bin\Debug\net6.0\Crud.BLL.dll
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\bin\Debug\net6.0\Crud.BLL.pdb
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\Crud.BLL.csproj.AssemblyReference.cache
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\Crud.BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\Crud.BLL.AssemblyInfoInputs.cache
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\Crud.BLL.AssemblyInfo.cs
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\Crud.BLL.csproj.CoreCompileInputs.cache
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\Crud.BLL.dll
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\refint\Crud.BLL.dll
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\Crud.BLL.pdb
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\ref\Crud.BLL.dll
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\bin\Debug\net6.0\Crud.DAL.dll
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\bin\Debug\net6.0\Crud.DAL.pdb
+C:\Users\Erick\source\repos\CrudMvc\Crud.BLL\obj\Debug\net6.0\Crud.BLL.csproj.CopyComplete

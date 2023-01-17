@@ -1,0 +1,46 @@
+﻿@model Crud.DAL.Models.ConfirmarEmail
+@{
+    ViewData["Title"] = "Confirmar email";
+    Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<div class="container">
+    <div class="row text-center">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            @if (Model.EmailVerified == true)
+            {
+                <br/><br/><br/>
+                <div class="alert alert-success" role="alert">
+                    <p>Su correo electrónico ha sido verificado con éxito.</p>
+                </div>
+
+                <a class="btn btn-primary" href="/Autenticacion/Login">Iniciar Sesión</a>
+            }
+            else
+            {
+                if (Model.EmailSent)
+                {
+                    <p>Correo electrónico enviado en su cuenta de correo electrónico registrada.</p>
+                }
+
+                else
+                {
+                    <p class="pt-5">Hemos enviado un correo electrónico a su cuenta de correo, porfavor ingrese para la confirmación de su cuenta</p>
+                }
+
+                <form asp-action="ConfirmEmail">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Email" />
+
+                    <hr/>
+                    <p>¿No me llego ningún correo?</p>
+                    <div class="form-group">
+                        <input type="submit" value="Reenviar correo electrónico de confirmación" class="btn btn-primary" />
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

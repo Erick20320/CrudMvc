@@ -21,12 +21,10 @@ namespace Crud.DAL.Models
         public string Username { get; set; }
 
         [Required]
-        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[#$^+=!*()@%&]).{6,}$", ErrorMessage = "Minimum length 6 and must contain  1 Uppercase,1 lowercase, 1 special character and 1 digit")]
+        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[#$^+=!*()@%&]).{6,}$", ErrorMessage = "Longitud mínima 6 y debe contener 1 mayúscula, 1 minúscula, 1 carácter especial y 1 dígito")]
         public string Password { get; set; }
         [Required]
         [Compare("Password")]
         public string PasswordConfirm { get; set; }
-
-        public string? Role { get; set; }
     }
 }

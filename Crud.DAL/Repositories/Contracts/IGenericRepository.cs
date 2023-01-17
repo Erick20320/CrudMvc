@@ -18,6 +18,5 @@ namespace Crud.DAL.Repositories.Contracts
         Task<Producto> Obtener(int id);
 
         Task<IEnumerable<TEntityModel>> ObtenerTodos();
-
     }
 }

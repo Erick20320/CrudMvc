@@ -18,5 +18,6 @@ namespace Crud.BLL.Service.Contracts
         Task<Producto> Obtener(int id);
 
         Task<List<Producto>> ObtenerTodos();
+
     }
 }

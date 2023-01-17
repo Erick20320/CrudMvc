@@ -8,6 +8,7 @@ namespace Crud.DAL.Models
 {
     public class Estado
     {
+
         public int StatusCode { get; set; }
         public string Message { get; set; }
     }

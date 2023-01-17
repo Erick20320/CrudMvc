@@ -16,8 +16,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Erick\source\repos\CrudMvc\Crud.PL
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Autenticacion/ChangePassword.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0ZW50aWNhY2lvblxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
+[C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Autenticacion/ConfirmEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0ZW50aWNhY2lvblxDb25maXJtRW1haWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Autenticacion/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0ZW50aWNhY2lvblxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Autenticacion/Login.cshtml]
@@ -26,6 +30,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Autenticacion/Registration.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0ZW50aWNhY2lvblxSZWdpc3RyYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Autenticacion/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0ZW50aWNhY2lvblxSZXNldFBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Home/Index.cshtml]
@@ -50,6 +58,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/Usuario/ListaUsuarios.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xMaXN0YVVzdWFyaW9zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Erick/source/repos/CrudMvc/Crud.PL/Views/_ViewImports.cshtml]

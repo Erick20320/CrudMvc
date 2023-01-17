@@ -1,6 +1,7 @@
 ﻿using Crud.BLL.Service.Contracts;
 using Crud.DAL.Models;
 using Crud.DAL.Repositories.Contracts;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,11 @@ namespace Crud.BLL.Service
         {
             _usuarRepo = usuarRepo;
         }
-        public async Task<Estado> ChangePasswordAsync(CambiarContrasena model, string username)
+        public async Task<IdentityResult> ResetPasswordAsync(ResetearContrasena model)
         {
             try
             {
-                return await _usuarRepo.ChangePasswordAsync(model,username);
+                return await _usuarRepo.ResetPasswordAsync(model);
             }
             catch
             {

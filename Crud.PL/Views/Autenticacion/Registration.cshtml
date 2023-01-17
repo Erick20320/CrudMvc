@@ -3,20 +3,11 @@
     Layout = null;
 }
 
-<style>
-
-
-    .botones{
-        padding-top: 10px;
-    }
-
-</style>
-
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 @Html.ValidationSummary()
 <div class="container">
-    <div class="row">
-        <div class="col-md-6 center-block">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-6">
             <h3>Regístrate</h3>
             <form asp-action="Registration" method="post">
                 <div class="form-group">
@@ -65,10 +56,10 @@
                         <span class="text-success">@TempData["msg"]</span>
                     </div>
                 }
-                <div class="botones">
+                <div class="form-group pt-2">
                     <button type="submit" class="btn btn-success">Registrarte</button>
-                    <a class="btn btn-primary" href="/Autenticacion/Login">Regresar</a>
                 </div>
+                <p>¿Ya tienes cuenta? <a href="/Autenticacion/Login">Inicia sesión.</a><p/>
             </form>
         </div>
     </div>

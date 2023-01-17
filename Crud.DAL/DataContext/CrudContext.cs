@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using Crud.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -19,6 +20,20 @@ public partial class CrudContext : IdentityDbContext<Usuario>
     }
 
     public virtual DbSet<Producto> Productos { get; set; }
+    public virtual DbSet<Usuario> Usuarios { get; set; }
+
+    public override int SaveChanges()
+    {
+        foreach (var item in ChangeTracker.Entries()
+        .Where(e => e.State == EntityState.Deleted &&
+           e.Metadata.GetProperties().Any(x => x.Name == "EmailConfirmed")))
+        {
+            item.State = EntityState.Unchanged;
+            item.CurrentValues["EmailConfirmed"] = false;
+        }
+
+        return base.SaveChanges();
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -27,6 +42,7 @@ public partial class CrudContext : IdentityDbContext<Usuario>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
         modelBuilder.Ignore<Producto>();
 
         modelBuilder.Entity<Producto>(entity =>

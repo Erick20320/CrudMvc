@@ -1,4 +1,5 @@
 ﻿using Crud.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace Crud.BLL.Service.Contracts
         Task<Estado> LoginAsync(Acceso model);
         Task LogoutAsync();
         Task<Estado> RegisterAsync(Registrar model);
-        Task<Estado> ChangePasswordAsync(CambiarContrasena model, string username);
+        Task<IdentityResult> ResetPasswordAsync(ResetearContrasena model);
     }
 }

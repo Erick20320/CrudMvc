@@ -43,11 +43,17 @@ namespace Crud.PL.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(Registrar model)
         {
-            if (!ModelState.IsValid) { return View(model); }
-           
-            var result = await this._authService.RegisterAsync(model);
-            TempData["msg"] = result.Message;
-            return RedirectToAction(nameof(Registration));
+            if (ModelState.IsValid)
+            {
+                // write your code
+                var result = await _authService.RegisterAsync(model);
+
+
+                ModelState.Clear();
+                return RedirectToAction("ConfirmEmail", new { email = model.Email });
+            }
+
+            return View(model);
         }
 
         [Authorize]
@@ -57,21 +63,108 @@ namespace Crud.PL.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        [Authorize]
-        public IActionResult ChangePassword()
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string uid, string token, string email)
+        {
+            ConfirmarEmail model = new ConfirmarEmail
+            {
+                Email = email
+            };
+
+            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
+            {
+                token = token.Replace(' ', '+');
+                var result = await _authService.ConfirmEmailAsync(uid, token);
+                if (result.Succeeded)
+                {
+                    model.EmailVerified = true;
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpPost("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmarEmail model)
+        {
+            var user = await _authService.GetUserByEmailAsync(model.Email);
+            if (user != null)
+            {
+                if (user.EmailConfirmed)
+                {
+                    await _authService.GenerateEmailConfirmationTokenAsync(user);
+                    model.EmailVerified = true;
+                    return View(model);
+                }
+
+                
+                model.EmailSent = true;
+                ModelState.Clear();
+            }
+            else
+            {
+                ModelState.AddModelError("", "Algo salió mal.");
+            }
+            return View(model);
+        }
+
+        [AllowAnonymous, HttpGet("fotgot-password")]
+        public IActionResult ForgotPassword()
         {
             return View();
         }
 
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(CambiarContrasena model)
+        [AllowAnonymous, HttpPost("fotgot-password")]
+        public async Task<IActionResult> ForgotPassword(OlvideContrasena model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-            var result = await _authService.ChangePasswordAsync(model, User.Identity.Name);
-            TempData["msg"] = result.Message;
-            return RedirectToAction(nameof(ChangePassword));
+            if (ModelState.IsValid)
+            {
+                // code here
+                var user = await _authService.GetUserByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    await _authService.GenerateForgotPasswordTokenAsync(user);
+                }
+
+                ModelState.Clear();
+                model.EmailSent = true;
+            }
+            return View(model);
+        }
+
+
+        [Authorize]
+        [AllowAnonymous, HttpGet("reset-password")]
+        public IActionResult ResetPassword(string uid, string token)
+        {
+            ResetearContrasena resetPassword = new ResetearContrasena
+            {
+                Token = token,
+                UserId = uid
+            };
+            return View(resetPassword);
+        }
+
+        [AllowAnonymous, HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetearContrasena model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Token = model.Token.Replace(' ', '+');
+                var result = await _authService.ResetPasswordAsync(model);
+                if (result.Succeeded)
+                {
+                    ModelState.Clear();
+                    model.IsSuccess = true;
+                    return View(model);
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
         }
     }
 }

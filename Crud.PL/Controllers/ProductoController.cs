@@ -1,4 +1,5 @@
 ﻿using Crud.BLL.Service.Contracts;
+using Crud.DAL.DataContext;
 using Crud.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,6 @@ namespace Crud.PL.Controllers
         [HttpGet]
         public async Task<IActionResult> ListaProductos()
         {
-
             List<Producto> listProductos = await _productoService.ObtenerTodos();
             return View(listProductos);
         }
@@ -25,14 +25,13 @@ namespace Crud.PL.Controllers
         public async Task<IActionResult> Insertar([FromBody] Producto producto)
         {
             await _productoService.Insertar(producto);
-            return Redirect("~/Producto/ListaProductos");
+            return Redirect("ListaProductos");
         }
 
         public IActionResult InsertarProd()
         {
-            return Redirect("~/Producto/ListaProductos");
+            return View("ListaProductos");
         }
-
 
         [HttpPost]
 
@@ -60,6 +59,5 @@ namespace Crud.PL.Controllers
             await _productoService.Eliminar(id);
             return Redirect("~/Producto/ListaProductos");
         }
-
     }
 }

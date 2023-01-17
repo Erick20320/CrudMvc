@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Crud.DAL.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Usuarios</h1>
+
+<table class="table table-striped" id="mydataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.ActionLink("Eliminar", "EliminarUsuar", new {  id=item.Id  }, new { @class = "btn btn-danger btn-sm btn-eliminar" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $(document).ready(function () {
+                $('#mydataTable').DataTable();
+            });
+        });
+
+        $("#mydataTable tbody").on("click", ".btn-eliminar", function () {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'El registro ha sido eliminado.',
+                showConfirmButton: false,
+                timer: 9000
+            })
+        })
+    </script>
+
+
+}

@@ -1,12 +1,16 @@
 ﻿using Crud.DAL.Models;
 using Crud.DAL.Repositories.Contracts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Crud.DAL.Repositories
 {
@@ -15,38 +19,22 @@ namespace Crud.DAL.Repositories
         private readonly UserManager<Usuario> userManager;
        
         private readonly SignInManager<Usuario> signInManager;
+
+        private readonly IServicioEmail _emailService;
+
+        private readonly IConfiguration _configuration;
+
         public ServicioAutenticacionUsuario(UserManager<Usuario> userManager,
-            SignInManager<Usuario> signInManager)
+            SignInManager<Usuario> signInManager, IServicioEmail emailService, IConfiguration configuration)
         {
             this.userManager = userManager;
             
             this.signInManager = signInManager;
 
-        }
+            _emailService = emailService;
 
-        public async Task<Estado> ChangePasswordAsync(CambiarContrasena model, string username)
-        {
-            var status = new Estado();
+            _configuration = configuration;
 
-            var user = await userManager.FindByNameAsync(username);
-            if (user == null)
-            {
-                status.Message = "El usuario no existe";
-                status.StatusCode = 0;
-                return status;
-            }
-            var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-            if (result.Succeeded)
-            {
-                status.Message = "La contraseña se ha actualizado correctamente";
-                status.StatusCode = 1;
-            }
-            else
-            {
-                status.Message = "Ocurrió algún error";
-                status.StatusCode = 0;
-            }
-            return status;
         }
 
         public async Task<Estado> LoginAsync(Acceso model)
@@ -86,7 +74,7 @@ namespace Crud.DAL.Repositories
             else if (signInResult.IsLockedOut)
             {
                 status.StatusCode = 0;
-                status.Message = "El usuario fue eliminado";
+                status.Message = "El usuario fue bloqueado";
             }
             else
             {
@@ -119,20 +107,86 @@ namespace Crud.DAL.Repositories
                 UserName = model.Username,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
+
             };
             var result = await userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
-                status.StatusCode = 0;
-                status.Message = "La creación del usuario falló";
-                return status;
+                await GenerateEmailConfirmationTokenAsync(user);
             }
-
-            status.StatusCode = 1;
-            status.Message = "Te has registrado exitosamente";
             return status;
         }
+
+        public async Task<Usuario> GetUserByEmailAsync(string email)
+        {
+            return await userManager.FindByEmailAsync(email);
+        }
+
+        public async Task GenerateEmailConfirmationTokenAsync(Usuario user)
+        {
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            if (!string.IsNullOrEmpty(token))
+            {
+                await SendEmailConfirmationEmail(user, token);
+            }
+        }
+
+        public async Task GenerateForgotPasswordTokenAsync(Usuario user)
+        {
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            if (!string.IsNullOrEmpty(token))
+            {
+                await SendForgotPasswordEmail(user, token);
+            }
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(string uid, string token)
+        {
+            return await userManager.ConfirmEmailAsync(await userManager.FindByIdAsync(uid), token);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(ResetearContrasena model)
+        {
+            return await userManager.ResetPasswordAsync(await userManager.FindByIdAsync(model.UserId), model.Token, model.NewPassword);
+        }
+
+        private async Task SendEmailConfirmationEmail(Usuario user, string token)
+        {
+            string appDomain = _configuration.GetSection("Application:AppDomain").Value;
+            string confirmationLink = _configuration.GetSection("Application:EmailConfirmation").Value;
+
+            UsuarioEmailOpciones options = new UsuarioEmailOpciones
+            {
+                ToEmails = new List<string>() { user.Email },
+                PlaceHolders = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("{{UserName}}", user.FirstName),
+                    new KeyValuePair<string, string>("{{Link}}",
+                        string.Format(appDomain + confirmationLink, user.Id, token))
+                }
+            };
+
+            await _emailService.SendEmailForEmailConfirmation(options);
+        }
+
+        private async Task SendForgotPasswordEmail(Usuario user, string token)
+        {
+            string appDomain = _configuration.GetSection("Application:AppDomain").Value;
+            string confirmationLink = _configuration.GetSection("Application:ForgotPassword").Value;
+
+            UsuarioEmailOpciones options = new UsuarioEmailOpciones
+            {
+                ToEmails = new List<string>() { user.Email },
+                PlaceHolders = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("{{UserName}}", user.FirstName),
+                    new KeyValuePair<string, string>("{{Link}}",
+                        string.Format(appDomain + confirmationLink, user.Id, token))
+                }
+            };
+
+            await _emailService.SendEmailForForgotPassword(options);
+        }
+
     }
 }

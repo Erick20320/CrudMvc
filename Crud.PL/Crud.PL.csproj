@@ -15,4 +15,16 @@
     <ProjectReference Include="..\Crud.DAL\Crud.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Autenticacion\ConfirmEmail.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Autenticacion\ConfirmEmail.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Autenticacion\ConfirmEmail.cshtml" />
+  </ItemGroup>
+
 </Project>

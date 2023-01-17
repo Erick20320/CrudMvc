@@ -9,13 +9,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD - Iniciar Sesión</title>
-
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <style>
         form {
             border: 3px solid #f1f1f1;
             width: 30%;
             margin: auto;
-            margin-top: 10%;
+            margin-top: 5%;
         }
 
         input[type=text], input[type=password] {
@@ -31,7 +31,7 @@
             font-family: spotify-circular, Helvetica, Arial, sans-serif;
             background-color: rgb(24, 119, 242);
             color: white;
-            padding: 14px 20px;
+            padding: 10px 20px;
             margin: 8px 0;
             border: none;
             cursor: pointer;
@@ -63,8 +63,6 @@
                 <span class="err" asp-validation-for="Username"></span>
             </div>
 
-
-
             <label asp-for="Password"><b>Contraseña</b></label>
             <input type="password" asp-for="Password" placeholder="Ingrese contraseña">
             <div class="msg">
@@ -78,7 +76,10 @@
             }
 
             <button type="submit">INICIAR SESION</button>
-            <a class="text-alert" href="/Autenticacion/Registration">¿No eres un usuario? Regístrate</a>
+            <p><a asp-action="ForgotPassword" asp-controller="Autenticacion">¿Has olvidado tu contraseña?</a></p>
+            <hr>
+            <p class="">¿No eres un usuario? Regístrate</p>
+            <a class="btn btn-success" href="/Autenticacion/Registration">Regístrate</a>
         </div>
     </form>
 
